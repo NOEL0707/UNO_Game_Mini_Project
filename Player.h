@@ -20,6 +20,9 @@ public:
     Card* getCardChoiceAutomatic(Card*);
     int getId();
     int getNoOfCardsRemaining();
+    int getNoOfColorCards(Card*);
+    bool doYouWantToChallenge();
+    bool doYouWantToChallengeManual();
     ~Player();
 };
 #endif

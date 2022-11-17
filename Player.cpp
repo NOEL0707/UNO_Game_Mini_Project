@@ -29,7 +29,7 @@ vector<Card*> Player::filter(Card* topCard){
     vector<Card*> filteredCards;
     int numberOfColorCards=0;
     for(auto card:cards){
-        if(card->isWild()){
+        if(card->isWild()||card->isPlus4()){
                 filteredCards.push_back(card);
         }
         else if(topCard->isReverse()&& card->isReverse()){
@@ -51,13 +51,7 @@ vector<Card*> Player::filter(Card* topCard){
         }
 
     }
-    if(numberOfColorCards==0){
-        for(auto card:cards){
-            if(card->isPlus4()){
-                filteredCards.push_back(card);
-            }
-        }
-    }
+    
     return filteredCards;
 }
 void Player::takeCard(Card* inputCard){
@@ -65,6 +59,33 @@ void Player::takeCard(Card* inputCard){
 }
 bool Player::didWin(){
     return cards.size()==0;
+}
+int Player::getNoOfColorCards(Card* topCard){
+    int noofcoloredcards=0;
+    for(auto c:cards){
+        if(topCard->getColor()==c->getColor() && topCard->getColor()!="NULL"){
+            noofcoloredcards++;
+        }
+    }
+    return noofcoloredcards;
+}
+bool Player::doYouWantToChallenge(){
+    random_device rd;
+    uniform_int_distribution<int> distribution(1,100);
+    int challengers_num =distribution(rd);
+        return challengers_num>=70;
+    }
+bool Player::doYouWantToChallengeManual(){
+    char a;
+    cout<<"Do you want to challenge for the use of +4 [Y/N] : ";
+    cin >> a;
+    while(a!='Y'||a!='y'||a!='N'||a!='n'){
+        cout<<"Wrong choice"<<endl;
+        cout<<"Input correct choice : ";
+        cin>>a;
+    }
+    return (a=='Y'||a=='y')?1:0;
+
 }
 int Player::getId(){
     return id;
@@ -103,7 +124,7 @@ Card* Player::getCardChoiceAutomatic(Card* topCard){
         filteredCards[i]->show();
         cout<<endl;
     }
-    //random choice generatoe
+    //random choice generator
     random_device rd;
     uniform_int_distribution<int> distribution(1,filteredCards.size());
     int choice=distribution(rd);

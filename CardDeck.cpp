@@ -13,7 +13,7 @@ CardDeck::CardDeck(/* args */)
 
 /*
     input: no. of card numbers and no. of colors
-    gives deck of cards with given card numbers and colors
+    functionality:gives deck of cards with given card numbers and colors
 */
 
 CardDeck::CardDeck(int inoOfNumbers,int inoOfColors)
@@ -116,7 +116,6 @@ Card* CardDeck::getTopCard(){
   
 void CardDeck::putCardInDrawPile(Card* card){
     drawPile.push(card);
-
 }
 
 /*  input : card
@@ -132,7 +131,10 @@ vector<string> CardDeck::getColors(){
     }
     return ans;
 }
-
+/*
+    Destructor
+    deletes all cards available.
+*/
 CardDeck::~CardDeck()
 {
     while(!drawPile.empty()){

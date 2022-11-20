@@ -19,6 +19,10 @@ Card::Card()
     reverse=false;
     skip=false;
 }
+/*
+    Constructor-1
+    input : color,number,what type of power card it is
+*/
 Card::Card(std::string inputColor,int num,bool isPlusTwo,bool isPlusFour,bool isWild,bool isReverse,bool isSkip)
 {
     color=inputColor;
@@ -29,6 +33,9 @@ Card::Card(std::string inputColor,int num,bool isPlusTwo,bool isPlusFour,bool is
     reverse=isReverse;
     skip=isSkip;
 }
+/*
+    getters for +2,+,reverse,skip,powercard
+*/
 bool Card::isPlus2(){
     return plus2;
 }
@@ -64,6 +71,9 @@ string Card::getColor(){
 int Card::getNumber(){
     return number;
 }
+/*
+    Function to print a card
+*/
 void Card::show(){
     if(plus2){
         cout<<"["<<color<<","<<"+2"<<"]";

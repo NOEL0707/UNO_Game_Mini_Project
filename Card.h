@@ -3,16 +3,19 @@
 #ifndef CARD_H
 #define CARD_H
 using namespace  std;
+/*
+    Class Card Declarations.
+*/
 class Card
 {
 private:
-    string color;
-    int number;
-    bool plus2;
-    bool plus4;
-    bool wild;
-    bool reverse;
-    bool skip;
+    string color;//to store color
+    int number;//to store number of card
+    bool plus2;//to store if a card is +2
+    bool plus4;//if a card is +4
+    bool wild;//if a card is wild
+    bool reverse;//if a card is reverse
+    bool skip;//if a card is skip
 
 public:
     Card();

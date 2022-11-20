@@ -1,6 +1,14 @@
 #include <bits/stdc++.h>
 #include"Card.h"
 
+/*
+This Class provides different attributes for a card.
+cards are divided into two groups 'numbers' and 'Power' cards.
+Power cards contain +2,+4,skip,reverse,wild cards.
+All the numerical cards are numbers cards.
+Every card contains color except for wild and +4 cards.
+*/
+
 Card::Card()
 {
     color;
@@ -36,9 +44,17 @@ bool Card::isReverse(){
 bool Card::isSkip(){
     return skip;
 }
+
+//returns if the card is a power card.
+
 bool Card::isPowerCard(){
     return plus2||plus4||reverse||skip||wild;
 }
+
+/*
+    input: color 
+    set the color of a card
+*/
 void Card::setColor(string s){
     color=s;
 }

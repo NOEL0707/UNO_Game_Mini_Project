@@ -88,7 +88,7 @@ bool Player::doYouWantToChallenge(){
     random_device rd;
     uniform_int_distribution<int> distribution(1,100);
     int challengers_num =distribution(rd);
-    return challengers_num>=70;
+    return challengers_num>=60;
 }
 //Using this function the player can challenge another player who played +4 card manually 
 bool Player::doYouWantToChallengeManual(){

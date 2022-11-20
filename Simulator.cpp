@@ -273,7 +273,7 @@ void Simulator::simulateAutomatically()
                 //gives no.of same colored cards as the top card, if it is greater than zero then the player draws four cards.
                 if (players[i]->getNoOfColorCards(topCard) > 0)
                 {
-                    cout << players[i]->getId() << " lost challenge and picked 4 cards " << endl;
+                    cout << players[(i + 1) % noOfPlayers]->getId()  << " lost challenge " << endl;
                     giveCards(players[i], 4);
                     i = (i + 1) % noOfPlayers;
                 }
@@ -281,7 +281,7 @@ void Simulator::simulateAutomatically()
                 //if there is no colored card same as the top card then challenger draws six cards
                 else
                 {
-                    cout << players[(i + 1) % noOfPlayers] << " lost challenge and picked 6 cards " << endl;
+                    cout << players[(i + 1) % noOfPlayers]->getId()  << " lost challenge " << endl;
                     giveCards(players[(i + 1) % noOfPlayers], 6);
                     i = (i + 2) % noOfPlayers;
                 }

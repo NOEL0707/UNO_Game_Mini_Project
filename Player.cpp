@@ -73,15 +73,17 @@ bool Player::doYouWantToChallenge(){
     random_device rd;
     uniform_int_distribution<int> distribution(1,100);
     int challengers_num =distribution(rd);
-        return challengers_num>=70;
-    }
+    return challengers_num>=70;
+}
 bool Player::doYouWantToChallengeManual(){
     char a;
-    cout<<"Do you want to challenge for the use of +4 [Y/N] : ";
+    cout<<"Player with id "<<id<<" Wants to Challenge"<<endl;
+    cout<<"Player with id  "<<id<<" Do you want to challenge for the use of +4 [Y/N] : ";
     cin >> a;
-    while(a!='Y'||a!='y'||a!='N'||a!='n'){
+    while(a!='Y'&&a!='y'&&a!='N'&&a!='n'){
         cout<<"Wrong choice"<<endl;
         cout<<"Input correct choice : ";
+        // cin.clear();
         cin>>a;
     }
     return (a=='Y'||a=='y')?1:0;
@@ -132,7 +134,52 @@ Card* Player::getCardChoiceAutomatic(Card* topCard){
     cout<<choice<<endl;
     return filteredCards[choice-1];
 }
+string Player::getColorChoice(vector<string> colors){
+    cout << "Color Choices: " << endl;
+    for (int i = 0; i < colors.size(); i++)
+    {
+        cout << "choice " << i + 1 << " :";
+        cout << colors[i] << endl;
+    }
+    int choice;
+    cout << "Select Color Choices: ";
+    cin >> choice;
+    while (choice - 1 > colors.size() || choice - 1 < 0)
+    {
+        cout << "Wrong Choice" << endl;
+        cout << "Select Correct colors Choice:";
+        cin >> choice;
+    }
+    cout << endl;
+    return colors[choice - 1];
+}
 
+string Player::getColorChoiceAutomatic(vector<string> colors){
+    cout << "Color Choices: " << endl;
+    for (int i = 0; i < colors.size(); i++)
+    {
+        cout << "choice " << i + 1 << " :";
+        cout << colors[i] << endl;
+    }
+    cout << "Select Color Choices: ";
+    random_device rd;
+    uniform_int_distribution<int> distribution(1, colors.size());
+    int choice = distribution(rd);
+    cout << choice << endl;
+    return colors[choice - 1];
+}
+bool Player::isUNO(){
+    char a;
+    cout<<"Do you want to say UNO [Y/N]:";
+    cin >> a;
+    return (a=='Y'||a=='y')?1:0;
+}
+bool Player::isUNOAutomatic(){
+    random_device rd;
+    uniform_int_distribution<int> distribution(0,1);
+    int choice = distribution(rd);
+    return choice<=0.9;
+}  
 Player::~Player(){
     for(auto card:cards){
         delete card;

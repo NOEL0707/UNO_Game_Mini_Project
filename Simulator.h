@@ -17,10 +17,8 @@ public:
 
     void distributeCards(int);
     int reversePlayers(int);
-    string getColorChoice();
     void giveCards(Player*,int);
-    string getColorChoiceAutomatically();
-    bool CheckPlayerWon(Player*);
+    bool CheckPlayerWon(Player*,string );
     int findStartingPlayerIndex(Card*,string);
     ~Simulator();
 };

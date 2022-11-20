@@ -19,11 +19,15 @@ int Simulator::reversePlayers(int idx)
     // std::cout << std::setfill('-') << std::setw(38) << '\n';
     cout << " direction is reversed 🔁" << endl;
     std::cout << std::setfill('-') << std::setw(38) << '\n';
+    if(players.size()==2){
+        return idx;
+    }
     reverse(players.begin(), players.end());
     if (idx == 0)
     {
         return 0;
     }
+
     return players.size() - idx;
 }
 void Simulator::giveCards(Player *player, int noofCards)
@@ -82,27 +86,27 @@ void Simulator::simulateManually()
         }
         if (playedCard != NULL && playedCard->isPlus4())
         {
-            string chosenColor = getColorChoice();
+            string chosenColor = players[i]->getColorChoice(cardDeck->getColors());
             playedCard->setColor(chosenColor);
             if (players[(i + 1) % noOfPlayers]->doYouWantToChallengeManual())
             {
                 cout << players[(i + 1) % noOfPlayers]->getId() << " challenged " << players[i]->getId() << " for use of +4 " << endl;
                 if (players[i]->getNoOfColorCards(topCard) > 0)
                 {
-                    cout << players[i]->getId() << " lost challenge and picked 4 cards " << endl;
+                    cout << players[(i + 1) % noOfPlayers]->getId() << " Won Challenge" << endl;
                     giveCards(players[i], 4);
                     i = (i + 1) % noOfPlayers;
                 }
                 else
                 {
-                    cout << players[(i + 1) % noOfPlayers] << " lost challenge and picked 6 cards " << endl;
+                    cout << players[(i + 1) % noOfPlayers]->getId()  << " lost challenge " << endl;
                     giveCards(players[(i + 1) % noOfPlayers], 6);
                     i = (i + 2) % noOfPlayers;
                 }
             }
             else
             {
-                if (CheckPlayerWon(players[i]))
+                if (CheckPlayerWon(players[i],"Manual"))
                     break;
                 i = (i + 1) % noOfPlayers;
                 giveCards(players[i], 4);
@@ -111,7 +115,7 @@ void Simulator::simulateManually()
         }
         if (playedCard != NULL && playedCard->isPlus2())
         {
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Manual"))
                 break;
             i = (i + 1) % noOfPlayers;
             giveCards(players[i], 2);
@@ -119,15 +123,15 @@ void Simulator::simulateManually()
         }
         if (playedCard != NULL && playedCard->isWild())
         {
-            string chosenColor = getColorChoice();
+            string chosenColor = players[i]->getColorChoice(cardDeck->getColors());
             playedCard->setColor(chosenColor);
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Manual"))
                 break;
             i = (i + 1) % noOfPlayers;
         }
         if (playedCard != NULL && playedCard->isSkip())
         {
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Manual"))
                 break;
             cout << "Player " << players[(i + 1) % noOfPlayers]->getId() << "'s turn Skipped 🚫" << endl;
             std::cout << std::setfill('-') << std::setw(38) << '\n';
@@ -135,13 +139,13 @@ void Simulator::simulateManually()
         }
         if (playedCard != NULL && playedCard->isReverse())
         {
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Manual"))
                 break;
             i = reversePlayers(i);
         }
         if (playedCard != NULL && !playedCard->isPowerCard())
         {
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Manual"))
                 break;
             i = (i + 1) % noOfPlayers;
         }
@@ -199,7 +203,7 @@ void Simulator::simulateAutomatically()
         if (playedCard != NULL && playedCard->isPlus4())
         {
             cout << players[i % noOfPlayers]->getId() << "  Played +4️⃣" << endl;
-            string chosenColor = getColorChoiceAutomatically();
+            string chosenColor = players[i]->getColorChoiceAutomatic(cardDeck->getColors());
             playedCard->setColor(chosenColor);
             if (players[(i + 1) % noOfPlayers]->doYouWantToChallenge())
             {
@@ -219,7 +223,7 @@ void Simulator::simulateAutomatically()
             }
             else
             {
-                if (CheckPlayerWon(players[i]))
+                if (CheckPlayerWon(players[i],"Automatic"))
                     break;
                 i = (i + 1) % noOfPlayers;
                 giveCards(players[i], 4);
@@ -229,7 +233,7 @@ void Simulator::simulateAutomatically()
         if (playedCard != NULL && playedCard->isPlus2())
         {
             cout << players[i % noOfPlayers]->getId() << "  Played  +2️⃣" << endl;
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Automatic"))
                 break;
             i = (i + 1) % noOfPlayers;
             giveCards(players[i], 2);
@@ -238,15 +242,15 @@ void Simulator::simulateAutomatically()
         if (playedCard != NULL && playedCard->isWild())
         {
             cout << players[i % noOfPlayers]->getId() << " Played wild card 🔴🔵🟢🟡" << endl;
-            string chosenColor = getColorChoiceAutomatically();
+            string chosenColor = players[i]->getColorChoiceAutomatic(cardDeck->getColors());
             playedCard->setColor(chosenColor);
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Automatic"))
                 break;
             i = (i + 1) % noOfPlayers;
         }
         if (playedCard != NULL && playedCard->isSkip())
         {
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Automatic"))
                 break;
             cout << "Player " << players[(i + 1) % noOfPlayers]->getId() << "'s turn Skipped 🚫" << endl;
             std::cout << std::setfill('-') << std::setw(38) << '\n';
@@ -254,13 +258,13 @@ void Simulator::simulateAutomatically()
         }
         if (playedCard != NULL && playedCard->isReverse())
         {
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Automatic"))
                 break;
             i = reversePlayers(i);
         }
         if (playedCard != NULL && !playedCard->isPowerCard())
         {
-            if (CheckPlayerWon(players[i]))
+            if (CheckPlayerWon(players[i],"Automatic"))
                 break;
             i = (i + 1) % noOfPlayers;
             // std::cout << std::setfill('-') << std::setw(38) << '\n';
@@ -281,12 +285,28 @@ void Simulator::simulateAutomatically()
         // std::cout << std::setfill('-') << std::setw(38) << '\n';
     }
 }
-bool Simulator::CheckPlayerWon(Player *player)
+bool Simulator::CheckPlayerWon(Player *player,string s)
 {
     if (player->didWin())
     {
         cout << "Player with ID " << player->getId() << " Won the match 🔥🔥🔥" << endl;
         return true;
+    }
+    if(player->getNoOfCardsRemaining()==1){
+        bool uno;
+        if(s=="Manual"){
+            uno=player->isUNO();
+        }
+        else{
+            uno=player->isUNOAutomatic();
+        }
+        if(uno){
+            cout << "Player " << player->getId() << " Played UNO 👍👍"<<endl;
+        }
+        if(!uno){
+            cout << "Player " << player->getId() << " did NOT Play UNO 👎👎👎"<<endl;
+            giveCards(player,2);
+        }
     }
     cout << "Player " << player->getId() << "'s Remaining cards are " << player->getNoOfCardsRemaining() << endl;
     cout << "Player " << player->getId() << "'s turn over" << endl;
@@ -303,43 +323,6 @@ void Simulator::distributeCards(int noOfCards)
         }
     }
 }
-string Simulator::getColorChoice()
-{
-    vector<string> colors = cardDeck->getColors();
-    cout << "Color Choices: " << endl;
-    for (int i = 0; i < colors.size(); i++)
-    {
-        cout << "choice " << i + 1 << " :";
-        cout << colors[i] << endl;
-    }
-    int choice;
-    cout << "Select Color Choices: ";
-    cin >> choice;
-    while (choice - 1 > colors.size() || choice - 1 < 0)
-    {
-        cout << "Wrong Choice" << endl;
-        cout << "Select Correct colors Choice:";
-        cin >> choice;
-    }
-    cout << endl;
-    return colors[choice - 1];
-}
-string Simulator::getColorChoiceAutomatically()
-{
-    vector<string> colors = cardDeck->getColors();
-    cout << "Color Choices: " << endl;
-    for (int i = 0; i < colors.size(); i++)
-    {
-        cout << "choice " << i + 1 << " :";
-        cout << colors[i] << endl;
-    }
-    cout << "Select Color Choices: ";
-    random_device rd;
-    uniform_int_distribution<int> distribution(1, colors.size());
-    int choice = distribution(rd);
-    cout << choice << endl;
-    return colors[choice - 1];
-}
 int Simulator::findStartingPlayerIndex(Card *topCard, string typeOfSimulation)
 {
     int i = 0;
@@ -352,20 +335,25 @@ int Simulator::findStartingPlayerIndex(Card *topCard, string typeOfSimulation)
     }
     else if (topCard->isWild())
     {
-        string chosenColor = typeOfSimulation == "Manual" ? getColorChoice() : getColorChoiceAutomatically();
+        string chosenColor = typeOfSimulation == "Manual" ? players[i]->getColorChoice(cardDeck->getColors()) : players[i]->getColorChoiceAutomatic(cardDeck->getColors());
         topCard->setColor(chosenColor);
         i = (i + 1) % noOfPlayers;
     }
     else if (topCard->isSkip())
     {
-        cout << "Player " << players[(i) % noOfPlayers]->getId() << "'s turn Skipped 🚫" << endl;
+        cout << "Player " << players[(i) % noOfPlayers]->getId() << "'s first turn Skipped 🚫" << endl;
         std::cout << std::setfill('-') << std::setw(38) << '\n';
         i = (i + 1) % noOfPlayers;
     }
     else if (topCard->isReverse())
     {
-
-        i = reversePlayers(i);
+        if(players.size()==2){
+            i=1;
+        }
+        else{
+            i = reversePlayers(i);
+        }
+        
     }
     if (!topCard->isPowerCard())
     {

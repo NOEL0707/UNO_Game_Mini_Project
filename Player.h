@@ -18,6 +18,10 @@ public:
     bool didWin();
     Card* getCardChoice(Card*);
     Card* getCardChoiceAutomatic(Card*);
+    string getColorChoice(vector<string>);
+    string getColorChoiceAutomatic(vector<string>);
+    bool isUNO();
+    bool isUNOAutomatic();
     int getId();
     int getNoOfCardsRemaining();
     int getNoOfColorCards(Card*);
